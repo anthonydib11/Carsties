@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
     <File Path="docker-compose.yml" />
   </Folder>
   <Project Path="AuctionService/AuctionService.csproj" />
+  <Project Path="SearchService/SearchService.csproj" Id="1344ddb0-9e47-469e-a978-671852df1142" />
 </Solution>
