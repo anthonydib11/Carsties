@@ -17,6 +17,14 @@ services:
       - "27017:27017"
     volumes:
       - mongodata:/data/db
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=adminpw
+    ports:
+      - "5672:5672"
+      - "15672:15672"
 
 volumes:
   pgdata:
