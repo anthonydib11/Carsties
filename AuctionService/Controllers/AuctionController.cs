@@ -5,6 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Contracts;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,6 +57,7 @@ namespace AuctionService.Controllers
             return _mapper.Map<AuctionDto>(auction);
         }
 
+        [Authorize]
         [HttpPost]
         public  async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto auctionDto)
         {
@@ -63,9 +65,9 @@ namespace AuctionService.Controllers
             {
                 var auction = _mapper.Map<Auction>(auctionDto);
 
-                //TODO : ADD CURRENT USER CHECKING
+               auction.Seller = User.Identity.Name; 
 
-                if(auction != null)
+                if (auction != null)
                 {
                     _context.Auctions.Add(auction);
 
@@ -87,6 +89,7 @@ namespace AuctionService.Controllers
             return BadRequest("Request Wrong");
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAuction(Guid id, [FromBody]  UpdateAuctionDto updateAuctionDto)
         {
@@ -98,7 +101,10 @@ namespace AuctionService.Controllers
                 if (auction != null)
                 {
 
-                    // TODO : CHECK USER SELLER == USERNAME 
+                    if ( auction.Seller != User.Identity.Name)
+                    {
+                        return Forbid();
+                    }
 
                     auction.Item.Make = updateAuctionDto?.Make ?? auction.Item.Make;
                     auction.Item.Year = updateAuctionDto?.Year ?? auction.Item.Year;
@@ -120,6 +126,7 @@ namespace AuctionService.Controllers
             return BadRequest("Request Wrong");
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuction(Guid id)
         {
@@ -130,8 +137,11 @@ namespace AuctionService.Controllers
 
                 if (auction != null)
                 {
-                    // TODO : CHECK USER SELLER == USERNAME 
 
+                    if (auction.Seller != User.Identity.Name)
+                    {
+                        return Forbid();
+                    }
 
                     _context.Auctions.Remove(auction);
 

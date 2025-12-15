@@ -5,5 +5,6 @@
   </Folder>
   <Project Path="AuctionService/AuctionService.csproj" />
   <Project Path="Contracts/Contracts.csproj" Id="c36b8240-12dc-46c4-86dd-fd5591823df2" />
+  <Project Path="IdentityService/IdentityService.csproj" Id="c0272022-f372-4639-ab58-078bd8c41389" />
   <Project Path="SearchService/SearchService.csproj" Id="1344ddb0-9e47-469e-a978-671852df1142" />
 </Solution>
